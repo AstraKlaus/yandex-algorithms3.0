@@ -19,6 +19,7 @@ public class Heap {
                 heap.insert(Integer.parseInt(current.split(" ")[1]));
             }
         }
+
     }
 }
 
