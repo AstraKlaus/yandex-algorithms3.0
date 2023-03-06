@@ -8,6 +8,7 @@ import java.util.HashMap;
 public class GraphComponents {
     static HashMap<Integer, ArrayList<Integer>> graph = new HashMap<>();
     static ArrayList<Boolean> visited = new ArrayList<>();
+    static ArrayList<StringBuilder> help = new ArrayList<>();
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String[] line = reader.readLine().split(" ");
@@ -28,27 +29,31 @@ public class GraphComponents {
         }
         for (int i = 0; i <= nums; i++){
             visited.add(false);
+            help.add(new StringBuilder(String.valueOf(i)));
         }
-        dfs(1);
-        int count =0;
+        int count = 0;
         StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 1; i <= nums; i++){
-            if (visited.get(i)){
+        for (int vertex = 1; vertex<=nums; vertex++){
+            dfs(vertex, vertex);
+            if (help.get(vertex).toString().contains(" ") || !visited.get(vertex) || graph.get(vertex) == null){
+                stringBuilder.append(help.get(vertex).toString().split(" ").length).append("\n").append(help.get(vertex)).append("\n");
                 count++;
-                stringBuilder.append(i).append(i != nums ? " " : "");
             }
         }
         System.out.println(count);
         System.out.print(stringBuilder);
     }
 
-    public static void dfs(int vertex){
+    public static void dfs(int vertex, int start){
         if (vertex < visited.size()) visited.set(vertex, true);
         else visited.set(vertex, true);
-        if (graph.get(vertex) != null) {
+        if (graph.get(vertex) != null)
             for (int edge : graph.get(vertex)) {
-                if (!visited.get(edge)) dfs(edge);
+                if (!visited.get(edge)) {
+                    help.get(start).append(" ").append(edge);
+                    dfs(edge, start);
+                }
             }
-        }
+
     }
 }
